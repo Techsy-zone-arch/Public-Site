@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إدارة المتجر الاحترافية</title>
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>body { font-family: 'Tajawal', sans-serif; }</style>
+</head>
+<body class="bg-slate-100 p-6 md:p-12 text-slate-800">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- قسم تعديل الإعدادات ومظهر الموقع -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold mb-4 text-indigo-600">🎨 مظهر وإعدادات المتجر</h2>
+                <form method="POST" class="space-y-4">
+                    <input type="hidden" name="action" value="update_config">
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1">اسم المتجر</label>
+                        <input type="text" name="store_name" value="{{ config.store_name }}" class="w-full p-2.5 border rounded-xl text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1">العنوان الرئيسي للبانر</label>
+                        <input type="text" name="hero_title" value="{{ config.hero_title }}" class="w-full p-2.5 border rounded-xl text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1">العنوان الفرعي للبانر</label>
+                        <textarea name="hero_subtitle" class="w-full p-2.5 border rounded-xl text-sm" rows="2" required>{{ config.hero_subtitle }}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1">رقم الواتساب الشغال (بالصيغة الدولية بدون +)</label>
+                        <input type="text" name="whatsapp_number" value="{{ config.whatsapp_number }}" class="w-full p-2.5 border rounded-xl text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1">معرّف ماسنجر الصفحة (Username)</label>
+                        <input type="text" name="messenger_username" value="{{ config.messenger_username }}" class="w-full p-2.5 border rounded-xl text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1">اللون الأساسي للموقع</label>
+                        <select name="primary_color" class="w-full p-2.5 border rounded-xl text-sm bg-white">
+                            <option value="indigo" {% if config.primary_color == 'indigo' %}selected{% endif %}>بنفسجي غامق (Indigo)</option>
+                            <option value="blue" {% if config.primary_color == 'blue' %}selected{% endif %}>أزرق ملكي (Blue)</option>
+                            <option value="green" {% if config.primary_color == 'green' %}selected{% endif %}>أخضر عشبي (Green)</option>
+                            <option value="rose" {% if config.primary_color == 'rose' %}selected{% endif %}>وردي عصري (Rose)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-indigo-700 transition">تحديث مظهر المتجر الآن ✨</button>
+                </form>
+            </div>
+            
+            <div class="bg-blue-50 border border-blue-200 p-5 rounded-2xl text-xs text-blue-800 space-y-2">
+                <p class="font-bold text-sm">🔗 رابط الأتمتة لـ فيسبوك:</p>
+                <p>استخدم هذا الرابط في منصة Make للربط التلقائي والرفع المباشر للمنتجات:</p>
+                <code class="block bg-white p-2 rounded border font-mono select-all text-slate-700">https://onrender.com</code>
+            </div>
+        </div>
+
+        <!-- قسم إضافة المنتجات وإدارتها -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold mb-4 text-slate-800">📦 إضافة منتج يدوي جديد</h2>
+                <form method="POST" class="space-y-4">
+                    <input type="hidden" name="action" value="add_product">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" name="name" placeholder="اسم المنتج" class="p-3 border rounded-xl text-sm w-full" required>
+                        <input type="text" name="price" placeholder="السعر (مثال: $49)" class="p-3 border rounded-xl text-sm w-full" required>
+                    </div>
+                    <input type="url" name="image" placeholder="رابط صورة المنتج المباشر" class="p-3 border rounded-xl text-sm w-full" required>
+                    <textarea name="desc" placeholder="شرح مواصفات المنتج بالتفصيل..." class="p-3 border rounded-xl text-sm w-full" rows="3" required></textarea>
+                    <button type="submit" class="bg-slate-900 text-white font-bold px-6 py-3 rounded-xl text-sm hover:bg-slate-800 transition">نشر المنتج على المتجر</button>
+                </form>
+            </div>
+
+            <!-- قائمة المنتجات الحالية -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold mb-4 text-slate-700">📋 المنتجات المتوفرة حالياً بالمتجر ({{ products|length }})</h2>
+                <div class="divide-y divide-slate-100 max-h-[400px] overflow-y-auto px-1">
+                    {% for product in products %}
+                    <div class="py-4 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <img src="{{ product.image }}" class="w-14 h-14 object-cover rounded-xl border">
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900">{{ product.name }}</h4>
+                                <p class="text-xs font-bold text-indigo-600 mt-0.5">{{ product.price }}</p>
+                            </div>
+                        </div>
+                        <a href="/admin/delete/{{ product.id }}" class="bg-rose-50 text-rose-600 font-bold px-3 py-1.5 rounded-xl hover:bg-rose-100 transition text-xs">حذف المنتج 🗑️</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
