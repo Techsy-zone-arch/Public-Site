@@ -3,57 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجري الذكي الفاخر</title>
-    <!-- Tailwind CSS للتصميم الجذاب والسريع -->
+    <title>{{ config.store_name }}</title>
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
-    <style>body { font-family: 'Tajawal', sans-serif; }</style>
+    <style>
+        body { font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s, color 0.3s; }
+    </style>
+    <script>
+        // سكربت فحص وتطبيق الوضع الليلي تلقائياً
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100">
 
-    <!-- شريط التنقل -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <!-- شريط العلوى للمتجر -->
+    <nav class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-slate-200/50 dark:border-slate-800/50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-indigo-6xl text-indigo-600">✨ متجري</a>
-            <div class="space-x-4 space-x-reverse">
-                <a href="#" class="text-gray-600 hover:text-indigo-6xl hover:text-indigo-600">الرئيسية</a>
-                <a href="#" class="text-gray-600 hover:text-indigo-6xl hover:text-indigo-600">المنتجات</a>
+            <a href="#" class="text-2xl font-bold text-{{ config.primary_color }}-600 dark:text-{{ config.primary_color }}-400">{{ config.store_name }}</a>
+            
+            <div class="flex items-center gap-4">
+                <!-- زر التبديل الليلي/النهاري -->
+                <button onclick="toggleTheme()" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:scale-105 transition">
+                    <span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- غلاف المتجر الرئيسي (Hero Section) -->
-    <header class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-20 px-4 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-4">اكتشف أفضل المنتجات العصرية</h1>
-        <p class="text-xl opacity-90 mb-8">جودة عالية، أسعار تنافسية، وتوصيل سريع حتى باب بيتك</p>
-        <a href="#products" class="bg-white text-indigo-600 font-bold px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition">تسوق الآن</a>
+    <!-- واجهة البانر الرئيسي العصري -->
+    <header class="relative overflow-hidden bg-gradient-to-br from-{{ config.primary_color }}-600 to-purple-700 text-white py-24 px-4 text-center">
+        <div class="relative z-10 max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight leading-tight">{{ config.hero_title }}</h1>
+            <p class="text-lg md:text-xl text-white/90 mb-8 font-light max-w-2xl mx-auto">{{ config.hero_subtitle }}</p>
+            <a href="#products-grid" class="bg-white text-{{ config.primary_color }}-700 font-bold px-8 py-3.5 rounded-full shadow-xl hover:bg-slate-50 transition transform hover:-translate-y-0.5 inline-block">تصفح المنتجات المعروضة الآن 🛍️</a>
+        </div>
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
     </header>
 
-    <!-- قسم المنتجات -->
-    <main id="products" class="max-w-6xl mx-auto px-4 py-16">
-        <h2 class="text-3xl font-bold text-center mb-12">منتجاتنا المميزة</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- شبكة عرض المنتجات -->
+    <main id="products-grid" class="max-w-6xl mx-auto px-4 py-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for product in products %}
-            <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-col justify-between">
-                <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-xl font-bold text-gray-900">{{ product.name }}</h3>
-                        <span class="text-xl font-extrabold text-indigo-6xl text-indigo-600">{{ product.price }}</span>
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700/50 overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col justify-between">
+                <div class="relative">
+                    <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-72 object-cover">
+                    <span class="absolute top-4 left-4 bg-white/90 dark:bg-slate-900/90 font-bold text-{{ config.primary_color }}-600 dark:text-{{ config.primary_color }}-400 px-4 py-1.5 rounded-full text-lg shadow-sm">{{ product.price }}</span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">{{ product.name }}</h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm mb-6 leading-relaxed">{{ product.desc }}</p>
                     </div>
-                    <p class="text-gray-600 text-sm mb-6 leading-relaxed">{{ product.desc }}</p>
-                    <button onclick="alert('تمت الإضافة للسلة! (يمكنك ربط هذا بزر واتساب أو بوابات دفع)')" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition">إضافة إلى السلة 🛒</button>
+                    
+                    <!-- أزرار الطلب والاستفسار الذكية -->
+                    <div class="space-y-2">
+                        <a href="https://wa.me{{ config.whatsapp_number }}?text=مرحباً، أود طلب منتج: {{ product.name }} بسعر {{ product.price }}" target="_blank" 
+                           class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-2xl transition flex items-center justify-center gap-2 shadow-md shadow-green-600/10">
+                            طلب مباشر عبر واتساب 🛒
+                        </a>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="https://wa.me{{ config.whatsapp_number }}?text=مرحباً، أريد الاستفسار عن تفاصيل منتج: {{ product.name }}" target="_blank"
+                               class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium py-2.5 rounded-xl transition text-center text-xs flex items-center justify-center">
+                                استفسار واتساب 💬
+                            </a>
+                            <a href="https://m.me{{ config.messenger_username }}" target="_blank"
+                               class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition text-center text-xs flex items-center justify-center shadow-md shadow-blue-600/10">
+                                استفسار ماسنجر ⚡
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     </main>
 
-    <!-- تذييل الصفحة -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center border-t border-gray-800">
-        <p>© 2026 جميع الحقوق محفوظة لمتجري الإلكتروني</p>
+    <footer class="bg-white dark:bg-slate-900 text-slate-400 py-10 text-center border-t border-slate-200/50 dark:border-slate-800/50">
+        <p class="text-sm">© 2026 {{ config.store_name }} - جميع الحقوق محفوظة</p>
     </footer>
 
+    <script>
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+    </script>
 </body>
 </html>
