@@ -4,49 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config.store_name }}</title>
-    <!-- تضمين النسخة المستقرة لـ Tailwind CSS -->
+    <!-- تضمين النسخة المستقرة لـ Tailwind CSS لمنع أي خلل في الهواتف -->
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     
-    <!-- وضع الشعار كأيقونة تظهر في تبويب المتصفح فوق -->
+    <!-- وضع شعار قناتك كأيقونة في تبويب المتصفح العلوي -->
     <link rel="icon" type="image/png" href="{{ config.logo_url }}">
-
+    
     <style>
-        body { 
-            font-family: 'Tajawal', sans-serif; 
-            background-color: {{ config.bg_color }}; 
-            color: #ffffff;
-        }
-        .neon-card {
-            background: {{ config.card_bg }};
-            border: 1px solid {{ config.cyan_color }}40;
-            transition: all 0.3s ease;
-        }
-        .neon-card:hover {
-            border-color: {{ config.cyan_color }};
-            box-shadow: 0 0 20px {{ config.cyan_color }}40;
-            transform: translateY(-4px);
-        }
-        /* تأثير إضاءة خفيف خلف الشعار ليناسب الثيم المظلم */
-        .logo-glow {
-            filter: drop-shadow(0 0 8px {{ config.cyan_color }}60);
-        }
+        body { font-family: 'Tajawal', sans-serif; background-color: {{ config.bg_color }}; color: #ffffff; }
+        .neon-card { background: {{ config.card_bg }}; border: 1px solid {{ config.cyan_color }}40; transition: all 0.3s ease; }
+        .neon-card:hover { border-color: {{ config.cyan_color }}; box-shadow: 0 0 20px {{ config.cyan_color }}40; transform: translateY(-4px); }
+        .logo-glow { filter: drop-shadow(0 0 8px {{ config.cyan_color }}60); }
     </style>
 </head>
 <body class="min-h-screen antialiased">
 
-    <!-- شريط التنقل العلوي المحدث بالشعار -->
+    <!-- شريط التنقل العلوي -->
     <nav class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <!-- إضافة صورة الشعار بشكل ذكي وأنيق -->
+                <!-- صورة شعار قناتك الاحترافي متوهجة في الـ Navbar -->
                 <img src="{{ config.logo_url }}" alt="Logo" class="w-10 h-10 rounded-full object-cover border border-slate-700 logo-glow">
-                <span class="inline-block w-2.5 h-2.5 rounded-full animate-pulse" style="background-color: {{ config.cyan_color }};"></span>
-                <a href="#" class="text-xl md:text-2xl font-black tracking-wider transition duration-300" style="color: {{ config.cyan_color }}; text-shadow: 0 0 8px {{ config.cyan_color }}80;">
+                <span class="inline-block w-2 h-2 rounded-full animate-pulse" style="background-color: {{ config.cyan_color }};"></span>
+                <a href="#" class="text-lg md:text-xl font-black tracking-wider transition duration-300" style="color: {{ config.cyan_color }}; text-shadow: 0 0 8px {{ config.cyan_color }}80;">
                     {{ config.store_name }}
                 </a>
             </div>
-            
             <div class="hidden md:flex items-center gap-6 text-xs font-mono text-slate-400">
                 <span style="color: {{ config.cyan_color }};">// الرئيسية</span>
                 <span>// قطع الكمبيوتر</span>
@@ -59,20 +43,16 @@
     <!-- البانر الرئيسي (Hero Section) -->
     <header class="relative text-center py-20 px-4 border-b border-slate-800 overflow-hidden bg-gradient-to-b from-slate-900/50 to-transparent">
         <div class="relative z-10 max-w-4xl mx-auto space-y-4">
-            <!-- إضافة الشعار أيضاً في منتصف البانر بشكل أكبر لإعطاء هوية قوية للموقع -->
+            <!-- عرض الشعار بشكل فخم وكبير في منتصف البانر الرئيسي لمتجر العتاد -->
             <div class="flex justify-center mb-2">
-                <img src="{{ config.logo_url }}" alt="Techsy Zone" class="w-24 h-24 rounded-2xl object-cover border-2 logo-glow" style="border-color: {{ config.cyan_color }};">
+                <img src="{{ config.logo_url }}" alt="Logo Large" class="w-24 h-24 rounded-2xl object-cover border-2 logo-glow" style="border-color: {{ config.cyan_color }};">
             </div>
             <div class="text-[10px] md:text-xs font-mono uppercase tracking-widest" style="color: {{ config.cyan_color }};">// {{ config.tagline }}</div>
-            <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight uppercase">
-                {{ config.hero_title }}
-            </h1>
-            <p class="text-sm md:text-lg text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
-                {{ config.hero_subtitle }}
-            </p>
-            <div class="pt-4">
-                <a href="#store-inventory" class="font-mono font-bold px-6 py-3 rounded-none text-xs uppercase tracking-wider transition duration-300 inline-block border-2 hover:bg-transparent" 
-                   style="border-color: {{ config.cyan_color }}; color: {{ config.cyan_color }}; shadow: 0 0 10px {{ config.cyan_color }}40;"
+            <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight uppercase">{{ config.hero_title }}</h1>
+            <p class="text-xs md:text-base text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">{{ config.hero_subtitle }}</p>
+            <div class="pt-2">
+                <a href="#store-inventory" class="font-mono font-bold px-6 py-2.5 text-xs uppercase tracking-wider transition duration-300 inline-block border-2" 
+                   style="border-color: {{ config.cyan_color }}; color: {{ config.cyan_color }};"
                    onmouseover="this.style.backgroundColor='{{ config.cyan_color }}'; this.style.color='#000000';"
                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='{{ config.cyan_color }}';">
                     {{ config.btn_hero_text }}
@@ -81,52 +61,50 @@
         </div>
     </header>
 
-    <!-- شبكة عرض قطع الهاردوير والاكسسوارات المعروضة بالمتجر -->
-    <main id="store-inventory" class="max-w-7xl mx-auto px-4 md:px-6 py-16">
-        
-        <div class="flex items-center justify-between mb-10 border-b border-slate-800 pb-4">
+    <!-- شبكة عرض المنتجات والأجهزة المتاحة -->
+    <main id="store-inventory" class="max-w-7xl mx-auto px-4 md:px-6 py-12">
+        <div class="flex items-center justify-between mb-8 border-b border-slate-800 pb-3">
             <div class="flex items-center gap-2">
                 <span class="font-mono text-sm" style="color: {{ config.cyan_color }};">//</span>
-                <h2 class="text-lg md:text-xl font-bold tracking-wide uppercase">{{ config.section_title }}</h2>
+                <h2 class="text-base md:text-lg font-bold tracking-wide uppercase">{{ config.section_title }}</h2>
             </div>
-            <div class="text-[10px] font-mono text-slate-500">SYS_STATUS: <span class="text-green-400">ONLINE</span></div>
+            <div class="text-[9px] font-mono text-slate-500">SYS_STATUS: <span class="text-green-400">ONLINE</span></div>
         </div>
         
-        <!-- كروت المنتجات الذكية -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for product in products %}
             <div class="neon-card rounded-none overflow-hidden flex flex-col justify-between">
                 
+                <!-- صورة كرت المنتج مع السعر النيوني المضيء والمستقر -->
                 <div class="relative bg-slate-950/40 p-2 border-b border-slate-800">
-                    <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-64 object-cover filter brightness-90 hover:brightness-100 transition duration-300">
-                    <span class="absolute bottom-4 left-4 bg-slate-900 font-mono font-bold px-4 py-1 text-xs border" style="color: {{ config.magenta_color }}; border-color: {{ config.magenta_color }};">
+                    <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-56 object-cover filter brightness-90 hover:brightness-100 transition duration-300">
+                    <span class="absolute bottom-4 left-4 bg-slate-900 font-mono font-bold px-3 py-0.5 text-xs border" style="color: {{ config.magenta_color }}; border-color: {{ config.magenta_color }};">
                         {{ product.price }}
                     </span>
                 </div>
                 
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+                <!-- تفاصيل ومواصفات الجهاز وأزرار المعاملات -->
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
                     <div>
-                        <h3 class="text-base md:text-lg font-bold text-white mb-2 tracking-wide">{{ product.name }}</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed font-light min-h-[40px]">{{ product.desc }}</p>
+                        <h3 class="text-sm md:text-base font-bold text-white mb-1 tracking-wide">{{ product.name }}</h3>
+                        <p class="text-slate-400 text-[11px] leading-relaxed font-light min-h-[36px]">{{ product.desc }}</p>
                     </div>
                     
-                    <div class="space-y-3 pt-2">
+                    <div class="space-y-2 pt-1">
+                        <!-- زر تأكيد وطلب الشراء المباشر الفوري عبر واتساب -->
                         <a href="https://wa.me{{ config.whatsapp_number }}?text=مرحباً، أود طلب: {{ product.name }} بسعر {{ product.price }}" 
-                           target="_blank" 
-                           class="w-full font-mono font-bold py-3 text-xs tracking-wider text-center uppercase transition duration-300 block text-slate-950"
-                           style="background-color: {{ config.cyan_color }};">
+                           target="_blank" class="w-full font-mono font-bold py-2 text-xs tracking-wider text-center uppercase transition duration-300 block text-slate-950" style="background-color: {{ config.cyan_color }};">
                             ORDER NOW // طلب فوري عبر واتساب
                         </a>
                         
+                        <!-- أزرار التواصل والاستفسار الجانبية المربوطة بالأدمن -->
                         <div class="grid grid-cols-2 gap-2">
-                            <a href="https://wa.me{{ config.whatsapp_number }}?text=مرحباً، أريد الاستفسار عن مواصفات: {{ product.name }}" 
-                               target="_blank"
-                               class="border border-slate-700 hover:border-slate-500 text-slate-300 font-medium py-2 rounded-none transition text-center text-xs flex items-center justify-center bg-slate-900/30">
+                            <a href="https://wa.me{{ config.whatsapp_number }}?text=مرحباً، أريد الاستفسار عن مواصفات: {{ product.name }}" target="_blank"
+                               class="border border-slate-700 hover:border-slate-500 text-slate-300 font-medium py-1.5 transition text-center text-[10px] flex items-center justify-center bg-slate-900/30">
                                 استفسار واتساب 💬
                             </a>
-                            <a href="https://m.me{{ config.messenger_username }}" 
-                               target="_blank"
-                               class="border border-blue-500/20 hover:border-blue-500 bg-blue-950/20 text-blue-400 font-medium py-2 rounded-none transition text-center text-xs flex items-center justify-center">
+                            <a href="https://m.me{{ config.messenger_username }}" target="_blank"
+                               class="border border-blue-500/20 hover:border-blue-500 bg-blue-950/20 text-blue-400 font-medium py-1.5 transition text-center text-[10px] flex items-center justify-center">
                                 ماسنجر الصفحة ⚡
                             </a>
                         </div>
@@ -138,10 +116,9 @@
         </div>
     </main>
 
-    <footer class="bg-slate-950 text-slate-600 py-10 text-center border-t border-slate-900 text-[10px] font-mono">
-        <div class="max-w-7xl mx-auto px-6 space-y-1">
-            <p>© 2026 {{ config.footer_text }}</p>
-        </div>
+    <!-- تذييل المتجر السفلي -->
+    <footer class="bg-slate-950 text-slate-600 py-8 text-center border-t border-slate-900 text-[10px] font-mono">
+        <p>© 2026 {{ config.footer_text }}</p>
     </footer>
 
 </body>
