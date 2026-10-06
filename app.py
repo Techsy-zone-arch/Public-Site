@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
 
 app = Flask(__name__)
 DATA_FILE = 'store_data.json'
@@ -10,7 +10,7 @@ def load_data():
         default_data = {
             "config": {
                 "store_name": "Techsy Zone ✨",
-                "logo_url": "https://imgur.com",  # رابط الشعار الافتراضي
+                "logo_url": "https://imgur.com",
                 "tagline": "HIGH-PERFORMANCE TECH STORE",
                 "hero_title": "NEON—LAPTOPS",
                 "hero_subtitle": "أفضل المنتجات العالمية بجودة استثنائية وأسعار تنافسية بين يديك عبر Techsy Zone",
@@ -18,11 +18,12 @@ def load_data():
                 "section_title": "القطع والعتاد المتوفر حالياً",
                 "whatsapp_number": "201000000000",
                 "messenger_username": "your.fb.page",
-                "cyan_color": "#00f3ff",     # لون النيون الأساسي
-                "magenta_color": "#ff007f",  # لون نيون الأسعار
-                "bg_color": "#090f1c",       # خلفية الموقع العميقة
-                "card_bg": "#0d1527",        # خلفية كروت اللابتوبات
-                "footer_text": "TECHSY ZONE STORE. ALL RIGHTS RESERVED."
+                "cyan_color": "#00f3ff",
+                "magenta_color": "#ff007f",
+                "bg_color": "#090f1c",
+                "card_bg": "#0d1527",
+                "footer_text": "TECHSY ZONE STORE. ALL RIGHTS RESERVED.",
+                "visitor_count": 0
             },
             "products": [
                 {
@@ -47,6 +48,22 @@ def save_data(data):
 @app.route('/')
 def home():
     data = load_data()
+    
+    # 1. فحص إذا كان الزائر هو الأدمن (أنت) عبر الكوكيز المخصص
+    is_admin_cookie = request.cookies.get('is_admin')
+    
+    # 2. فحص إذا كان الزائر هو بوت المراقبة تلقائياً (User-Agent)
+    user_agent = request.headers.get('User-Agent', '').lower()
+    bot_keywords = ['uptimerobot', 'cron-job', 'headlesschrome', 'curl', 'wget', 'robot', 'spider', 'bot']
+    is_bot = any(keyword in user_agent for keyword in bot_keywords)
+    
+    # زيادة العداد فقط إذا لم يكن بوت ولم تكن أنت الأدمن
+    if not is_admin_cookie and not is_bot:
+        if "visitor_count" not in data['config']:
+            data['config']['visitor_count'] = 0
+        data['config']['visitor_count'] += 1
+        save_data(data)
+        
     return render_template('index.html', products=data['products'], config=data['config'])
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -55,10 +72,9 @@ def admin():
     if request.method == 'POST':
         action = request.form.get('action')
         
-        # تحديث مفاصل ومظهر المتجر بالكامل (مع دعم الشعار)
         if action == 'update_config':
             data['config']['store_name'] = request.form.get('store_name')
-            data['config']['logo_url'] = request.form.get('logo_url')  # سحب وحفظ رابط الشعار الجديد
+            data['config']['logo_url'] = request.form.get('logo_url')
             data['config']['tagline'] = request.form.get('tagline')
             data['config']['hero_title'] = request.form.get('hero_title')
             data['config']['hero_subtitle'] = request.form.get('hero_subtitle')
@@ -73,7 +89,6 @@ def admin():
             data['config']['footer_text'] = request.form.get('footer_text')
             save_data(data)
             
-        # إضافة منتج يدوي جديد
         elif action == 'add_product':
             new_id = max([p['id'] for p in data['products']], default=0) + 1
             new_product = {
@@ -87,8 +102,19 @@ def admin():
             save_data(data)
             
         return redirect(url_for('admin'))
-        
-    return render_template('admin.html', products=data['products'], config=data['config'])
+    
+    # عند دخولك لصفحة الأدمن، نزرع كوكيز في متصفحك يمنع احتساب زياراتك مستقبلاً
+    response = make_response(render_template('admin.html', products=data['products'], config=data['config']))
+    response.set_cookie('is_admin', 'true', max_age=31536000) # صالح لمدة سنة كاملة
+    return response
+
+# مسار تصفير عداد الزوار من جديد
+@app.route('/admin/reset-visitors')
+def reset_visitors():
+    data = load_data()
+    data['config']['visitor_count'] = 0
+    save_data(data)
+    return redirect(url_for('admin'))
 
 @app.route('/admin/delete/<int:product_id>')
 def delete_product(product_id):
