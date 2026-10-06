@@ -2,96 +2,105 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>إدارة المتجر الاحترافية</title>
+    <title>لوحة التحكم - Techsy Zone</title>
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>body { font-family: 'Tajawal', sans-serif; }</style>
 </head>
-<body class="bg-slate-100 p-6 md:p-12 text-slate-800">
-    <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- قسم تعديل الإعدادات ومظهر الموقع -->
-        <div class="lg:col-span-1 space-y-6">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold mb-4 text-indigo-600">🎨 مظهر وإعدادات المتجر</h2>
-                <form method="POST" class="space-y-4">
-                    <input type="hidden" name="action" value="update_config">
-                    <div>
-                        <label class="block text-xs text-slate-500 mb-1">اسم المتجر</label>
-                        <input type="text" name="store_name" value="{{ config.store_name }}" class="w-full p-2.5 border rounded-xl text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-500 mb-1">العنوان الرئيسي للبانر</label>
-                        <input type="text" name="hero_title" value="{{ config.hero_title }}" class="w-full p-2.5 border rounded-xl text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-500 mb-1">العنوان الفرعي للبانر</label>
-                        <textarea name="hero_subtitle" class="w-full p-2.5 border rounded-xl text-sm" rows="2" required>{{ config.hero_subtitle }}</textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-500 mb-1">رقم الواتساب الشغال (بالصيغة الدولية بدون +)</label>
-                        <input type="text" name="whatsapp_number" value="{{ config.whatsapp_number }}" class="w-full p-2.5 border rounded-xl text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-500 mb-1">معرّف ماسنجر الصفحة (Username)</label>
-                        <input type="text" name="messenger_username" value="{{ config.messenger_username }}" class="w-full p-2.5 border rounded-xl text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-500 mb-1">اللون الأساسي للموقع</label>
-                        <select name="primary_color" class="w-full p-2.5 border rounded-xl text-sm bg-white">
-                            <option value="indigo" {% if config.primary_color == 'indigo' %}selected{% endif %}>بنفسجي غامق (Indigo)</option>
-                            <option value="blue" {% if config.primary_color == 'blue' %}selected{% endif %}>أزرق ملكي (Blue)</option>
-                            <option value="green" {% if config.primary_color == 'green' %}selected{% endif %}>أخضر عشبي (Green)</option>
-                            <option value="rose" {% if config.primary_color == 'rose' %}selected{% endif %}>وردي عصري (Rose)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-indigo-700 transition">تحديث مظهر المتجر الآن ✨</button>
-                </form>
+<body class="bg-slate-900 text-slate-100 p-4 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-6">
+        <!-- الهيدر العلوي -->
+        <header class="border-b border-slate-800 pb-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="{{ config.logo_url }}" class="w-12 h-12 rounded-full border border-cyan-400 object-cover shadow-[0_0_10px_#00f3ff]">
+                <div>
+                    <h1 class="text-lg md:text-xl font-black text-cyan-400">⚙️ CONTROL PANEL // لوحة التحكم المطلقة</h1>
+                    <p class="text-[11px] text-slate-400">إدارة متجر وعلامة Techsy Zone التجارية</p>
+                </div>
             </div>
+            <span class="text-[10px] font-mono text-green-400 bg-green-500/10 px-2 py-1 border border-green-500/20">SYS: ONLINE</span>
+        </header>
+
+        <!-- استمارة الإعدادات الكبرى -->
+        <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <input type="hidden" name="action" value="update_config">
             
-            <div class="bg-blue-50 border border-blue-200 p-5 rounded-2xl text-xs text-blue-800 space-y-2">
-                <p class="font-bold text-sm">🔗 رابط الأتمتة لـ فيسبوك:</p>
-                <p>استخدم هذا الرابط في منصة Make للربط التلقائي والرفع المباشر للمنتجات:</p>
-                <code class="block bg-white p-2 rounded border font-mono select-all text-slate-700">https://onrender.com</code>
+            <!-- النصوص والهوية -->
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/50 space-y-3">
+                <h3 class="text-sm font-bold text-cyan-400 border-b border-slate-700 pb-1">📋 نصوص وعناوين الواجهة</h3>
+                <input type="text" name="store_name" value="{{ config.store_name }}" placeholder="اسم المتجر" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs text-white" required>
+                <input type="url" name="logo_url" value="{{ config.logo_url }}" placeholder="رابط صورة اللوجو" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs font-mono text-cyan-400" required>
+                <input type="text" name="tagline" value="{{ config.tagline }}" placeholder="العبارة العلوية الترحيبية" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs font-mono text-cyan-400" required>
+                <input type="text" name="hero_title" value="{{ config.hero_title }}" placeholder="العنوان الرئيسي العريض" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs text-white font-bold" required>
+                <textarea name="hero_subtitle" placeholder="العنوان الفرعي الشارح" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs text-slate-300" rows="2" required>{{ config.hero_subtitle }}</textarea>
             </div>
-        </div>
 
-        <!-- قسم إضافة المنتجات وإدارتها -->
-        <div class="lg:col-span-2 space-y-6">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold mb-4 text-slate-800">📦 إضافة منتج يدوي جديد</h2>
-                <form method="POST" class="space-y-4">
-                    <input type="hidden" name="action" value="add_product">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" name="name" placeholder="اسم المنتج" class="p-3 border rounded-xl text-sm w-full" required>
-                        <input type="text" name="price" placeholder="السعر (مثال: $49)" class="p-3 border rounded-xl text-sm w-full" required>
+            <!-- الاتصال والنيون -->
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/50 space-y-3">
+                <h3 class="text-sm font-bold text-pink-500 border-b border-slate-700 pb-1">🎨 الألوان وبوابات التواصل</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" name="btn_hero_text" value="{{ config.btn_hero_text }}" placeholder="نص زر التصفح" class="p-2 bg-slate-950 border border-slate-700 rounded text-xs text-white" required>
+                    <input type="text" name="section_title" value="{{ config.section_title }}" placeholder="عنوان قسم الكتالوج" class="p-2 bg-slate-950 border border-slate-700 rounded text-xs text-white" required>
+                </div>
+                <input type="text" name="whatsapp_number" value="{{ config.whatsapp_number }}" placeholder="رقم الواتساب (صيغة دولية بدون +)" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs text-white" required>
+                <input type="text" name="messenger_username" value="{{ config.messenger_username }}" placeholder="معرف ماسنجر الصفحة" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs text-white" required>
+                
+                <div class="grid grid-cols-2 gap-4 pt-1">
+                    <label class="block text-[11px] text-slate-400">النيون الرئيسي: <input type="color" name="cyan_color" value="{{ config.cyan_color }}" class="w-full h-6 block mt-1 cursor-pointer bg-transparent border-0"></label>
+                    <label class="block text-[11px] text-slate-400">نيون الأسعار: <input type="color" name="magenta_color" value="{{ config.magenta_color }}" class="w-full h-6 block mt-1 cursor-pointer bg-transparent border-0"></label>
+                </div>
+            </div>
+
+            <!-- الخلفيات والحفظ -->
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-amber-400 border-b border-slate-700 pb-1">🖥️ خلفيات وفواتير النظام</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="block text-[11px] text-slate-400">خلفية الموقع: <input type="color" name="bg_color" value="{{ config.bg_color }}" class="w-full h-6 block mt-1 cursor-pointer bg-transparent border-0"></label>
+                        <label class="block text-[11px] text-slate-400">خلفية الكروت: <input type="color" name="card_bg" value="{{ config.card_bg }}" class="w-full h-6 block mt-1 cursor-pointer bg-transparent border-0"></label>
                     </div>
-                    <input type="url" name="image" placeholder="رابط صورة المنتج المباشر" class="p-3 border rounded-xl text-sm w-full" required>
-                    <textarea name="desc" placeholder="شرح مواصفات المنتج بالتفصيل..." class="p-3 border rounded-xl text-sm w-full" rows="3" required></textarea>
-                    <button type="submit" class="bg-slate-900 text-white font-bold px-6 py-3 rounded-xl text-sm hover:bg-slate-800 transition">نشر المنتج على المتجر</button>
+                    <input type="text" name="footer_text" value="{{ config.footer_text }}" placeholder="حقوق الفوتر السفلي" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400" required>
+                </div>
+                <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-2.5 rounded-lg font-bold transition text-xs uppercase tracking-wider mt-4 shadow-md shadow-cyan-400/10">
+                    💾 APPLY CHANGES // حفظ مفاصل المتجر
+                </button>
+            </div>
+        </form>
+
+        <!-- كتالوج المنتجات المعروضة -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- إضافة منتج -->
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/50 space-y-3">
+                <h3 class="text-sm font-bold text-emerald-400 border-b border-slate-700 pb-1">📦 إضافة منتج يدوياً</h3>
+                <form method="POST" class="space-y-3">
+                    <input type="hidden" name="action" value="add_product">
+                    <input type="text" name="name" placeholder="اسم اللابتوب أو القطعة" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs" required>
+                    <input type="text" name="price" placeholder="السعر (مثال: $1200)" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs" required>
+                    <input type="url" name="image" placeholder="رابط صورة المنتج المباشر" class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs" required>
+                    <textarea name="desc" placeholder="المواصفات التقنية (المعالج، كرت الشاشة، الرام)..." class="w-full p-2 bg-slate-950 border border-slate-700 rounded text-xs" rows="2" required></textarea>
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 py-2 rounded font-bold transition text-xs">نشر وتحديث الكتالوج</button>
                 </form>
             </div>
 
-            <!-- قائمة المنتجات الحالية -->
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold mb-4 text-slate-700">📋 المنتجات المتوفرة حالياً بالمتجر ({{ products|length }})</h2>
-                <div class="divide-y divide-slate-100 max-h-[400px] overflow-y-auto px-1">
+            <!-- الكتالوج والحذف -->
+            <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700/50">
+                <h3 class="text-sm font-bold text-slate-300 border-b border-slate-700 pb-1 mb-3">📋 القطع النشطة بالمتجر حالياً ({{ products|length }})</h3>
+                <div class="divide-y divide-slate-700 max-h-[220px] overflow-y-auto px-1">
                     {% for product in products %}
-                    <div class="py-4 flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            <img src="{{ product.image }}" class="w-14 h-14 object-cover rounded-xl border">
+                    <div class="py-2 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <img src="{{ product.image }}" class="w-9 h-9 object-cover rounded border border-slate-700">
                             <div>
-                                <h4 class="font-bold text-sm text-slate-900">{{ product.name }}</h4>
-                                <p class="text-xs font-bold text-indigo-600 mt-0.5">{{ product.price }}</p>
+                                <h4 class="font-bold text-xs text-white">{{ product.name }}</h4>
+                                <p class="text-[10px] text-pink-500 font-mono font-bold">{{ product.price }}</p>
                             </div>
                         </div>
-                        <a href="/admin/delete/{{ product.id }}" class="bg-rose-50 text-rose-600 font-bold px-3 py-1.5 rounded-xl hover:bg-rose-100 transition text-xs">حذف المنتج 🗑️</a>
+                        <a href="/admin/delete/{{ product.id }}" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 px-3 py-1 rounded text-[10px] font-bold">حذف 🗑️</a>
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-
     </div>
 </body>
 </html>
