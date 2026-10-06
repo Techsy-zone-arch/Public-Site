@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config.store_name }}</title>
-    <!-- تضمين مكتبة Tailwind CSS الرسمية والمستقرة -->
-    <script src="https://tailwindcss.com"></script>
+    <!-- تضمين مكتبة Tailwind عبر خادم unpkg البديل والمستقر تماماً -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body { font-family: 'Tajawal', sans-serif; transition: background-color 0.3s, color 0.3s; }
     </style>
     <script>
-        // تفعيل الوضع الليلي بناءً على خيار المستخدم
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
@@ -24,12 +23,11 @@
     <!-- شريط التنقل العلوي -->
     <nav class="bg-white dark:bg-slate-800 shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
-                <span>{{ config.store_name }}</span>
+            <a href="#" class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {{ config.store_name }}
             </a>
             
             <div class="flex items-center gap-4">
-                <!-- زر التبديل بين الوضع الليلي والنهاري -->
                 <button onclick="toggleTheme()" class="p-2.5 rounded-full bg-gray-100 dark:bg-slate-700 hover:scale-105 transition text-xl">
                     <span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span>
                 </button>
@@ -44,7 +42,6 @@
             <p class="text-base md:text-lg text-blue-100 mb-8 font-light max-w-2xl mx-auto">{{ config.hero_subtitle }}</p>
             <a href="#products-grid" class="bg-white text-blue-700 font-bold px-8 py-3.5 rounded-full shadow-lg hover:bg-gray-100 transition transform hover:-translate-y-0.5 inline-block text-sm md:text-base">تصفح المنتجات المعروضة الآن 🛍️</a>
         </div>
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
     </header>
 
     <!-- شبكة المنتجات -->
@@ -55,20 +52,17 @@
             {% for product in products %}
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-gray-100 dark:border-slate-700/50 overflow-hidden hover:shadow-xl transition duration-300 flex flex-col justify-between">
                 
-                <!-- صورة المنتج والسعر -->
                 <div class="relative">
                     <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-64 object-cover">
                     <span class="absolute top-4 left-4 bg-white/95 dark:bg-slate-900/95 font-bold text-blue-600 dark:text-blue-400 px-4 py-1.5 rounded-xl text-base shadow-md">{{ product.price }}</span>
                 </div>
                 
-                <!-- تفاصيل المنتج -->
                 <div class="p-6 flex-1 flex flex-col justify-between">
                     <div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ product.name }}</h3>
                         <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 leading-relaxed">{{ product.desc }}</p>
                     </div>
                     
-                    <!-- أزرار التواصل والطلب والتحويل التلقائي -->
                     <div class="space-y-3">
                         <a href="https://wa.me{{ config.whatsapp_number }}?text=مرحباً، أود طلب منتج: {{ product.name }} بسعر {{ product.price }}" 
                            target="_blank" 
@@ -96,12 +90,10 @@
         </div>
     </main>
 
-    <!-- أسفل الصفحة -->
     <footer class="bg-white dark:bg-slate-800 text-gray-400 py-8 text-center border-t border-gray-200 dark:border-slate-700 mt-20">
         <p class="text-sm">© 2026 {{ config.store_name }} - جميع الحقوق محفوظة</p>
     </footer>
 
-    <!-- سكربت التحكم بالوضع الليلي الجذّاب -->
     <script>
         function toggleTheme() {
             if (document.documentElement.classList.contains('dark')) {
